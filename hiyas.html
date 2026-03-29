@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congratulations, Jewel!! :) </title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Inter:wght@300;400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(135deg, #c084fc 0%, #ff9a9e 50%, #fecfef 100%);
+            background-attachment: fixed;
+            position: relative;
+            cursor: none;
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Custom cursor */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
+        }
+
+        /* Main container */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Letter card - Glassmorphism */
+        .letter-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 70vh;
+            overflow-y: auto;
+            box-shadow: 
+                0 25px 45px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .letter-card.expanded {
+            max-height: 90vh;
+            padding: 50px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Title */
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Image */
+        .letter-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            filter: brightness(0.7) contrast(1.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .letter-image:hover {
+            filter: brightness(0.8) contrast(1.2);
+            transform: scale(1.02);
+        }
+
+        /* Typing text */
+        .typing-text {
+            color: #fff;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            text-align: center;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .typing-text.line-1 { animation: typeLine 2s 0.5s forwards; }
+        .typing-text.line-2 { animation: typeLine 2s 2s forwards; }
+        .typing-text.line-3 { animation: typeLine 2s 3.5s forwards; }
+        .typing-text.line-4 { animation: typeLine 2s 5s forwards; }
+        .typing-text.expanded-text { animation: fadeIn 1s 0.3s forwards; }
+
+        @keyframes typeLine {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Read More button */
+        .read-more-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: none;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+
+        .read-more-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Expanded content */
+        .expanded-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.8s ease;
+        }
+
+        .letter-card.expanded .expanded-content {
+            max-height: 1000px;
+        }
+
+        /* Music toggle */
+        .music-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: none;
+            z-index: 100;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .music-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .music-toggle.playing {
+            background: rgba(76, 175, 80, 0.3);
+        }
+
+        /* Heartbeat animation */
+        .heartbeat {
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .letter-card {
+                padding: 30px 25px;
+                margin: 20px;
+                border-radius: 25px;
+            }
+            
+            .title {
+                font-size: 2.2rem;
+                margin-bottom: 20px;
+            }
+            
+            .letter-image {
+                height: 160px;
+            }
+        }
+
+        /* Scrollbar */
+        .letter-card::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .letter-card::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .letter-card::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom cursor -->
+    <div class="cursor" id="cursor"></div>
+
+    <!-- Music toggle -->
+    <button class="music-toggle" id="musicToggle">🎵</button>
+
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Main container -->
+    <div class="container">
+        <div class="letter-card" id="letterCard">
+            <h1 class="title">Words I've Been Afraid to Say</h1>
+            
+            <img src="https://image2url.com/r2/default/images/1774704050370-a92cd9d4-3956-43b8-bc3a-348bb86edcd1.jpg" 
+                 alt="A moment we'll always remember" class="letter-image">
+            
+            <div class="typing-text line-1">I've been thinking about you a lot lately.</div>
+            <div class="typing-text line-2">More than I probably should admit.</div>
+            <div class="typing-text line-3">Every quiet moment, you're there.</div>
+            <div class="typing-text line-4">I think... I might be falling for you.</div>
+            
+            <div class="expanded-content">
+                <div class="typing-text expanded-text">
+                    I remember that night we stayed up talking until 3am. You laughed at my terrible jokes, 
+                    and I felt like I could tell you anything. Since then, everything reminds me of you - 
+                    the songs on my playlist, the coffee I make every morning, even the way the sunlight 
+                    hits my window. <br><br>
+                    
+                    I'm scared to say this because I don't want to ruin what we have. But I can't keep 
+                    pretending I don't feel this pull toward you. You're the first person I want to tell 
+                    when something good happens. The one I think about when I'm falling asleep. <br><br>
+                    
+                    I don't know if you feel the same, but I had to be honest. These are the words I've 
+                    been afraid to say... I love you.
+                </div>
+            </div>
+            
+            <button class="read-more-btn" id="readMoreBtn">Read More</button>
+        </div>
+    </div>
+
+    <!-- Background music (muted by default) -->
+    <audio id="bgMusic" loop>
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSq+0/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSq+0/" type="audio/wav">
+    </audio>
+
+    <script>
+        // Custom cursor
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Floating particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDuration = (Math.random() * 3 + 15) + 's';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            document.getElementById('particles').appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, 20000);
+        }
+
+        setInterval(createParticle, 300);
+
+        // Read more button
+        const letterCard = document.getElementById('letterCard');
+        const readMoreBtn = document.getElementById('readMoreBtn');
+        const expandedContent = document.querySelector('.expanded-content');
+
+        readMoreBtn.addEventListener('click', () => {
+            letterCard.classList.toggle('expanded');
+            if (letterCard.classList.contains('expanded')) {
+                readMoreBtn.textContent = 'Close';
+                readMoreBtn.classList.add('heartbeat');
+            } else {
+                readMoreBtn.textContent = 'Read More';
+                readMoreBtn.classList.remove('heartbeat');
+            }
+        });
+
+        // Music toggle
+        const musicToggle = document.getElementById('musicToggle');
+        const bgMusic = document.getElementById('bgMusic');
+        
+        musicToggle.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play().catch(() => {}); // Ignore autoplay errors
+                musicToggle.classList.add('playing');
+                musicToggle.textContent = '♪';
+            } else {
+                bgMusic.pause();
+                musicToggle.classList.remove('playing');
+                musicToggle.textContent = '🎵';
+            }
+        });
+
+        // Smooth hover effects
+        document.querySelectorAll('button, .letter-image').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(1.5)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+            });
+        });
+
+        // Prevent scrolling on mobile
+        document.addEventListener('touchmove', (e) => {
+            if (e.target === document.body) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    </script>
+</body>
+</html>
